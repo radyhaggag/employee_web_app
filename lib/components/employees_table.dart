@@ -13,53 +13,56 @@ class EmployeesTable extends StatelessWidget {
     final cubit = context.watch<EmployeeCubit>();
     return BlocBuilder<EmployeeCubit, EmployeeState>(
       builder: (context, state) {
-        return DataTable(
-          columns: const [
-            DataColumn(label: Text("Code")),
-            DataColumn(label: Text("Name")),
-            DataColumn(label: Text("Birthday")),
-            DataColumn(label: Text("Salary")),
-            DataColumn(label: Text("Gender")),
-            DataColumn(label: Text("Attachments")),
-            DataColumn(label: Text("Actions")),
-          ],
-          rows: cubit.employees.map((employee) {
-            return DataRow(
-              cells: [
-                DataCell(Text(employee.empCode)),
-                DataCell(Text(employee.empName)),
-                DataCell(Text(employee.empBirthday)),
-                DataCell(Text(employee.empSalary.toString())),
-                DataCell(Text(employee.empGender)),
-                DataCell(Text(employee.attachmentsPaths.length.toString())),
-                DataCell(
-                  Row(
-                    children: [
-                      TextButton(
-                        child: Text("Edit"),
-                        onPressed: () {
-                          onEdit?.call(employee);
-                        },
-                      ),
-                      TextButton(
-                        child: Text("Delete"),
-                        onPressed: () {
-                          cubit.deleteEmployee(
-                            cubit.employees.indexOf(employee),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Employee deleted successfully!"),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            columns: const [
+              DataColumn(label: Text("Code")),
+              DataColumn(label: Text("Name")),
+              DataColumn(label: Text("Birthday")),
+              DataColumn(label: Text("Salary")),
+              DataColumn(label: Text("Gender")),
+              DataColumn(label: Text("Attachments")),
+              DataColumn(label: Text("Actions")),
+            ],
+            rows: cubit.employees.map((employee) {
+              return DataRow(
+                cells: [
+                  DataCell(Text(employee.empCode)),
+                  DataCell(Text(employee.empName)),
+                  DataCell(Text(employee.empBirthday)),
+                  DataCell(Text(employee.empSalary.toString())),
+                  DataCell(Text(employee.empGender)),
+                  DataCell(Text(employee.attachmentsPaths.length.toString())),
+                  DataCell(
+                    Row(
+                      children: [
+                        TextButton(
+                          child: Text("Edit"),
+                          onPressed: () {
+                            onEdit?.call(employee);
+                          },
+                        ),
+                        TextButton(
+                          child: Text("Delete"),
+                          onPressed: () {
+                            cubit.deleteEmployee(
+                              cubit.employees.indexOf(employee),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Employee deleted successfully!"),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          }).toList(),
+                ],
+              );
+            }).toList(),
+          ),
         );
       },
     );
